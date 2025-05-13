@@ -2,7 +2,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-const base = "/mock-sso-portal/";
+const base = process.env.BASE_URL;
 
 // https://vite.dev/config/
 export default defineConfig({

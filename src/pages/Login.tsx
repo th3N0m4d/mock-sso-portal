@@ -22,7 +22,9 @@ export default function LoginPage() {
     <div className="d-md-flex half">
       <div
         className="bg"
-        style={{ backgroundImage: 'url("/images/bg_1.jpg")' }}
+        style={{
+          backgroundImage: `url(${import.meta.env.BASE_URL}images/bg.jpg)`,
+        }}
       ></div>
 
       <div className="contents">
