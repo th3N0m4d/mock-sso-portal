@@ -11,7 +11,7 @@ export function GuestRoute({ children }: PropsWithChildren) {
     if (authenticated) {
       navigate("/", { replace: true });
     }
-  }, [authenticated]);
+  }, [authenticated, navigate]);
 
   if (!authenticated) {
     return children;

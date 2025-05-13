@@ -15,6 +15,7 @@ export default function LoginPage() {
 
   const handleSSOClick = (provider: "google" | "facebook") => {
     // redirect or simulate
+    console.log("Selected provider", provider);
   };
 
   return (
