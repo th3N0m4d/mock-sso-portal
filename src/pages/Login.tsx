@@ -23,7 +23,7 @@ export default function LoginPage() {
       <div
         className="bg"
         style={{
-          backgroundImage: `url(${import.meta.env.BASE_URL}images/bg.jpg)`,
+          backgroundImage: `url(${import.meta.env.VITE_BASE_URL}images/bg.jpg)`,
         }}
       ></div>
 
