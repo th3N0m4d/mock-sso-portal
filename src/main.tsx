@@ -4,11 +4,11 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App.tsx";
 
-// const base = import.meta.env.VITE_BASE_URL;
+const basename = import.meta.env.VITE_BASE_URL;
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter basename={"/mock-sso-portal/"}>
+    <BrowserRouter basename={basename}>
       <App />
     </BrowserRouter>
   </StrictMode>
