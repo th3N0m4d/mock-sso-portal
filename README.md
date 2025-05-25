@@ -4,9 +4,7 @@
 > Demonstrates scalable architecture, clean code practices, and secure authentication flows using SSO and role-based access control.
 
 [![Build](https://img.shields.io/github/actions/workflow/status/th3N0m4d/mock-sso-portal/ci.yml?branch=main)](https://github.com/th3N0m4d/mock-sso-portal/actions)
-[![Coverage](https://img.shields.io/codecov/c/github/th3N0m4d/mock-sso-portal?label=coverage)](https://codecov.io/gh/th3N0m4d/mock-sso-portal)
-[![License](https://img.shields.io/github/license/th3N0m4d/mock-sso-portal)](https://github.com/th3N0m4d/mock-sso-portal/blob/main/LICENSE)
-[![Deploy](https://vercelbadge.vercel.app/api/th3N0m4d/mock-sso-portal)](https://mock-sso-portal.vercel.app)
+[![Deploy](https://vercelbadge.vercel.app/api/th3N0m4d/mock-sso-portal)](https://th3n0m4d.github.io/mock-sso-portal/) 
 
 ---
 
