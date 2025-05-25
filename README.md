@@ -1,54 +1,65 @@
-# React + TypeScript + Vite
+# 🔐 SSO Login Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **Enterprise-Ready Auth** built with **Vite**, **React**, **TypeScript**, and **Keycloak**.  
+> Demonstrates scalable architecture, clean code practices, and secure authentication flows using SSO and role-based access control.
 
-Currently, two official plugins are available:
+[![Build](https://img.shields.io/github/actions/workflow/status/th3N0m4d/mock-sso-portal/ci.yml?branch=main)](https://github.com/th3N0m4d/mock-sso-portal/actions)
+[![Coverage](https://img.shields.io/codecov/c/github/th3N0m4d/mock-sso-portal?label=coverage)](https://codecov.io/gh/th3N0m4d/mock-sso-portal)
+[![License](https://img.shields.io/github/license/th3N0m4d/mock-sso-portal)](https://github.com/th3N0m4d/mock-sso-portal/blob/main/LICENSE)
+[![Deploy](https://vercelbadge.vercel.app/api/th3N0m4d/mock-sso-portal)](https://mock-sso-portal.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 📦 Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend:** Vite + React + TypeScript
+- **Auth:** Keycloak (OIDC), SSO-ready (Google, Facebook planned)
+- **CI/CD:** GitHub Actions + gh-pages
+- **Testing:** Vitest
+- **Linting:** ESLint
+- **Deployments:** Vercel + GitHub Pages + Fly.io (serverless backends)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🚀 Features
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- 🔐 **SSO-ready architecture** (Keycloak, OIDC)
+- 🧠 **Role-based access control**
+- 🧪 **Tested codebase** with `vitest`
+- 🧹 **Linted** with ESLint
+- ⚙️ **CI/CD** integrated (build, test, lint, deploy)
+- 📐 **Enterprise architecture patterns** simulated
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+---
+
+## 🛠️ Scripts
+
+| Script      | Description                  |
+|-------------|------------------------------|
+| `dev`       | Start local dev server       |
+| `build`     | Type check + build project   |
+| `deploy`    | Deploy to GitHub Pages       |
+| `test`      | Run unit tests (Vitest)      |
+| `lint`      | Lint codebase (ESLint)       |
+| `preview`   | Preview production build     |
+
+---
+
+## 📷 Screenshots (TODO)
+
+- Architecture diagram
+- Auth flow
+- Protected route demo
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](./LICENSE).
+
+---
+
+## 🙌 Contributions
+
+PRs are welcome. Raise issues, request features, or fork and experiment.
+
