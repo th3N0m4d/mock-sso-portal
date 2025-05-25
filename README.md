@@ -3,8 +3,10 @@
 > **Enterprise-Ready Auth** built with **Vite**, **React**, **TypeScript**, and **Keycloak**.  
 > Demonstrates scalable architecture, clean code practices, and secure authentication flows using SSO and role-based access control.
 
-[![Build](https://img.shields.io/github/actions/workflow/status/th3N0m4d/mock-sso-portal/ci.yml?branch=main)](https://github.com/th3N0m4d/mock-sso-portal/actions)
-[![Deploy](https://vercelbadge.vercel.app/api/th3N0m4d/mock-sso-portal)](https://th3n0m4d.github.io/mock-sso-portal/) 
+[![Build](https://img.shields.io/github/actions/workflow/status/th3N0m4d/mock-sso-portal/deploy.yml?branch=main)](https://github.com/th3N0m4d/mock-sso-portal/actions)
+![Vite](https://img.shields.io/badge/built%20with-Vite-646CFF.svg?logo=vite&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=flat&logo=react&logoColor=%2361DAFB)
+![TypeScript](https://img.shields.io/badge/typescript-007acc.svg?logo=typescript&logoColor=white)
 
 ---
 
