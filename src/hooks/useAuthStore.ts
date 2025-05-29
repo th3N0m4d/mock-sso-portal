@@ -1,7 +1,5 @@
 import { create } from "zustand";
-
-const INVALID_CREDS = "Invalid username or password";
-const MOCK_TOKEN = "mock-jwt-token";
+import { loginWithUsernamePassword } from "../services";
 
 type State = {
   authenticated: boolean;
@@ -10,7 +8,7 @@ type State = {
 };
 
 type Actions = {
-  login(username: string, password: string): void;
+  login(username: string, password: string): Promise<void>;
   logout(): void;
 };
 
@@ -24,13 +22,17 @@ export const useAuthStore = create<AuthStore>((set) => {
     authenticated,
     token,
     error: "",
-    login: (username, password) => {
-      if (username === "admin" && password === "pwd") {
-        set({ authenticated: true, token: MOCK_TOKEN, error: "" });
-        localStorage.setItem("token", MOCK_TOKEN);
+    login: async (username, password) => {
+      const { error, accessToken } = await loginWithUsernamePassword(
+        username,
+        password
+      );
+
+      if (error) {
+        set({ error });
       } else {
-        set({ error: INVALID_CREDS });
-        console.error(INVALID_CREDS);
+        set({ authenticated: true, token: accessToken, error: "" });
+        localStorage.setItem("token", accessToken);
       }
     },
     logout: () => {
