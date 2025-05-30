@@ -1,8 +1,11 @@
-// Redirects to Keycloak to start SSO flow
-import { VercelRequest, VercelResponse } from "@vercel/node";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
-  const { provider } = req.query; // e.g. "google"
+  const provider = req.body?.provider || req?.query?.provider;
+  if (!provider) {
+    return res.status(400).json({ error: "Missing provider" });
+  }
+
   const redirectUri = process.env.REDIRECT_URI;
 
   const authUrl =
