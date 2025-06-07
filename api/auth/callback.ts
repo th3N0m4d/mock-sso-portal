@@ -5,7 +5,9 @@ import axios from "axios";
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const code = req.query.code as string;
 
-  if (!code) return res.status(400).send("Missing code");
+  if (!code) {
+    return res.status(400).send("Missing code");
+  }
 
   try {
     const tokenRes = await axios.post(

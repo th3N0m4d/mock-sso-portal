@@ -1,43 +1,68 @@
 import { create } from "zustand";
-import { loginWithUsernamePassword } from "../services";
 
 type State = {
   authenticated: boolean;
-  token: string;
+  user: any | null;
   error: string;
+  loading: boolean;
 };
 
 type Actions = {
   login(username: string, password: string): Promise<void>;
+  ssoLogin(provider: string): void;
+  fetchUser(): Promise<void>;
   logout(): void;
 };
 
 type AuthStore = State & Actions;
 
-export const useAuthStore = create<AuthStore>((set) => {
-  const token = localStorage.getItem("token") || "";
-  const authenticated = token.length > 0;
+export const useAuthStore = create<AuthStore>((set, get) => ({
+  authenticated: false,
+  user: null,
+  error: "",
+  loading: true,
+  login: async (username, password) => {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+      credentials: "include",
+    });
 
-  return {
-    authenticated,
-    token,
-    error: "",
-    login: async (username, password) => {
-      const { error, accessToken } = await loginWithUsernamePassword(
-        username,
-        password
-      );
+    if (!res.ok) {
+      const data = await res.json();
+      set({ error: data.error || "Login failed" });
+      return;
+    }
 
-      if (error) {
-        set({ error });
-      } else {
-        set({ authenticated: true, token: accessToken, error: "" });
-        localStorage.setItem("token", accessToken);
-      }
-    },
-    logout: () => {
-      localStorage.removeItem("token");
-      set({ authenticated: false, token: "", error: "" });
-    },
-  };
-});
+    // After login, get user info from cookie
+    await get().fetchUser();
+  },
+
+  ssoLogin: (provider: string) => {
+    window.location.href = `/api/auth/sso?provider=${provider}`;
+  },
+
+  fetchUser: async () => {
+    const res = await fetch("/api/auth/me", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (res.ok) {
+      const { user } = await res.json();
+      set({ user, authenticated: true, error: "", loading: false });
+    } else {
+      set({ user: null, authenticated: false, loading: false });
+    }
+  },
+
+  logout: async () => {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    set({ authenticated: false, user: null, error: "" });
+  },
+}));

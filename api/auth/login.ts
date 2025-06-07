@@ -1,4 +1,4 @@
-import { VercelRequest, VercelResponse } from "@vercel/node";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { username, password } = req.body;
@@ -22,8 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     );
 
     console.info({ username: req.body.username }, "Login successful");
-    const data = await response.json();
-    res.status(response.status).json(data);
+    res.status(response.status).end();
   } catch (error) {
     console.error({ error }, "Login failed");
     res.status(500).json({ error: "Something went wrong" });
