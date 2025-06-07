@@ -1,41 +1,68 @@
 import { create } from "zustand";
 
-const INVALID_CREDS = "Invalid username or password";
-const MOCK_TOKEN = "mock-jwt-token";
-
 type State = {
   authenticated: boolean;
-  token: string;
+  user: any | null;
   error: string;
+  loading: boolean;
 };
 
 type Actions = {
-  login(username: string, password: string): void;
+  login(username: string, password: string): Promise<void>;
+  ssoLogin(provider: string): void;
+  fetchUser(): Promise<void>;
   logout(): void;
 };
 
 type AuthStore = State & Actions;
 
-export const useAuthStore = create<AuthStore>((set) => {
-  const token = localStorage.getItem("token") || "";
-  const authenticated = token.length > 0;
+export const useAuthStore = create<AuthStore>((set, get) => ({
+  authenticated: false,
+  user: null,
+  error: "",
+  loading: true,
+  login: async (username, password) => {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+      credentials: "include",
+    });
 
-  return {
-    authenticated,
-    token,
-    error: "",
-    login: (username, password) => {
-      if (username === "admin" && password === "pwd") {
-        set({ authenticated: true, token: MOCK_TOKEN, error: "" });
-        localStorage.setItem("token", MOCK_TOKEN);
-      } else {
-        set({ error: INVALID_CREDS });
-        console.error(INVALID_CREDS);
-      }
-    },
-    logout: () => {
-      localStorage.removeItem("token");
-      set({ authenticated: false, token: "", error: "" });
-    },
-  };
-});
+    if (!res.ok) {
+      const data = await res.json();
+      set({ error: data.error || "Login failed" });
+      return;
+    }
+
+    // After login, get user info from cookie
+    await get().fetchUser();
+  },
+
+  ssoLogin: (provider: string) => {
+    window.location.href = `/api/auth/sso?provider=${provider}`;
+  },
+
+  fetchUser: async () => {
+    const res = await fetch("/api/auth/me", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (res.ok) {
+      const { user } = await res.json();
+      set({ user, authenticated: true, error: "", loading: false });
+    } else {
+      set({ user: null, authenticated: false, loading: false });
+    }
+  },
+
+  logout: async () => {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    set({ authenticated: false, user: null, error: "" });
+  },
+}));

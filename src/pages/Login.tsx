@@ -5,7 +5,7 @@ import { useAuthStore } from "../hooks";
 
 export default function LoginPage() {
   const [mode, setMode] = useState<"login" | "forgot">("login");
-  const { login } = useAuthStore();
+  const { login, ssoLogin, error } = useAuthStore();
 
   const handleSubmit = (data: { username: string; password: string }) => {
     // handle auth
@@ -15,7 +15,7 @@ export default function LoginPage() {
 
   const handleSSOClick = (provider: "google" | "facebook") => {
     // redirect or simulate
-    console.log("selected provider ", provider);
+    ssoLogin(provider);
   };
 
   return (
@@ -30,6 +30,11 @@ export default function LoginPage() {
           <div className="row align-items-center justify-content-center">
             <div className="col-md-12">
               <div className="form-block mx-auto">
+                {error && (
+                  <div className="alert alert-danger" role="alert">
+                    {error}
+                  </div>
+                )}
                 {mode === "login" ? (
                   <LoginForm
                     onSubmit={handleSubmit}

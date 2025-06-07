@@ -25,23 +25,25 @@ export function LoginForm({ onSubmit, onForgot, onSSO }: LoginFormProps) {
         <div className="form-group first">
           <label htmlFor="username">Username</label>
           <input
-            type="text"
+            type="email"
             className="form-control"
             placeholder="your-email@gmail.com"
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
           />
         </div>
         <div className="form-group last mb-3">
           <label htmlFor="password">Password</label>
           <input
             type="password"
-            className="form-control"
+            className="form-control is-valid"
             placeholder="Your Password"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
 
@@ -75,13 +77,6 @@ export function LoginForm({ onSubmit, onForgot, onSSO }: LoginFormProps) {
         <span className="text-center my-3 d-block">or</span>
 
         <div className="">
-          <button
-            type="button"
-            className="btn btn-block py-2 btn-facebook"
-            onClick={() => onSSO("facebook")}
-          >
-            <span className="icon-facebook mr-3"></span> Login with Facebook
-          </button>
           <button
             type="button"
             className="btn btn-block py-2 btn-google"
