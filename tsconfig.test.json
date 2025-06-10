@@ -1,5 +1,7 @@
+// tsconfig.test.json
 {
   "compilerOptions": {
-    "types": ["vitest"]
-  }
+    "types": ["vitest/globals"]
+  },
+  "include": ["./api/**/*.test.ts"]
 }
