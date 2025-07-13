@@ -1,11 +1,40 @@
 import { LoginForm, ForgotPassword } from "../components";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthStore } from "../hooks";
+import { Hub } from "aws-amplify/utils";
+import { signInWithRedirect, getCurrentUser } from "aws-amplify/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [mode, setMode] = useState<"login" | "forgot">("login");
-  const { login } = useAuthStore();
+  const { login, setUser } = useAuthStore();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = Hub.listen("auth", ({ payload }) => {
+      switch (payload.event) {
+        case "signInWithRedirect":
+          // User has been redirected to the provider
+          break;
+        case "signInWithRedirect_failure":
+          // Handle sign in failure
+          console.error("SSO sign in failed:", payload.data);
+          break;
+        case "signedIn":
+          // User is signed in. Update the auth store and redirect.
+          getCurrentUser()
+            .then((user) => {
+              setUser(user); // Update your auth state
+              navigate("/dashboard"); // Redirect to a protected route
+            })
+            .catch(() => console.log("Not signed in"));
+          break;
+      }
+    });
+
+    return unsubscribe;
+  }, [navigate, setUser]);
 
   const handleSubmit = (data: { username: string; password: string }) => {
     // handle auth
@@ -13,9 +42,12 @@ export default function LoginPage() {
     login(username, password);
   };
 
-  const handleSSOClick = (provider: "google" | "facebook") => {
-    // redirect or simulate
-    console.log("selected provider ", provider);
+  const handleSSOClick = async (provider: "Google" | "Facebook" | "Amazon") => {
+    try {
+      await signInWithRedirect({ provider });
+    } catch (error) {
+      console.error("Error during signInWithRedirect", error);
+    }
   };
 
   return (
