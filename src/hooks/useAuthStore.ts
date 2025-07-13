@@ -7,11 +7,13 @@ type State = {
   authenticated: boolean;
   token: string;
   error: string;
+  user?: unknown;
 };
 
 type Actions = {
   login(username: string, password: string): void;
   logout(): void;
+  setUser(user: unknown): void;
 };
 
 type AuthStore = State & Actions;
@@ -36,6 +38,9 @@ export const useAuthStore = create<AuthStore>((set) => {
     logout: () => {
       localStorage.removeItem("token");
       set({ authenticated: false, token: "", error: "" });
+    },
+    setUser: (user: unknown) => {
+      set({ user, authenticated: true, token: "", error: "" });
     },
   };
 });
