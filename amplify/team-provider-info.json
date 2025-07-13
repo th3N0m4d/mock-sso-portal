@@ -10,6 +10,11 @@
       "StackName": "amplify-mockssoportal-dev-2aac2",
       "StackId": "arn:aws:cloudformation:eu-central-1:447412045633:stack/amplify-mockssoportal-dev-2aac2/79542030-5fae-11f0-9326-029ccfde1dc3",
       "AmplifyAppId": "dohvckwb7zqak"
+    },
+    "categories": {
+      "auth": {
+        "mockssoportal47103847": {}
+      }
     }
   }
 }
