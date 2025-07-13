@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-mockssoportal-dev-2aac2-authRole",
+      "UnauthRoleArn": "arn:aws:iam::447412045633:role/amplify-mockssoportal-dev-2aac2-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::447412045633:role/amplify-mockssoportal-dev-2aac2-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-mockssoportal-dev-2aac2-deployment",
+      "UnauthRoleName": "amplify-mockssoportal-dev-2aac2-unauthRole",
+      "StackName": "amplify-mockssoportal-dev-2aac2",
+      "StackId": "arn:aws:cloudformation:eu-central-1:447412045633:stack/amplify-mockssoportal-dev-2aac2/79542030-5fae-11f0-9326-029ccfde1dc3",
+      "AmplifyAppId": "dohvckwb7zqak"
+    }
+  }
+}
