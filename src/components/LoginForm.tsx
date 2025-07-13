@@ -3,7 +3,7 @@ import { useState } from "react";
 type LoginFormProps = {
   onSubmit: (data: { username: string; password: string }) => void;
   onForgot: () => void;
-  onSSO: (provider: "google" | "facebook") => void;
+  onSSO: (provider: "Google" | "Facebook") => void;
 };
 
 export function LoginForm({ onSubmit, onForgot, onSSO }: LoginFormProps) {
@@ -78,14 +78,14 @@ export function LoginForm({ onSubmit, onForgot, onSSO }: LoginFormProps) {
           <button
             type="button"
             className="btn btn-block py-2 btn-facebook"
-            onClick={() => onSSO("facebook")}
+            onClick={() => onSSO("Facebook")}
           >
             <span className="icon-facebook mr-3"></span> Login with Facebook
           </button>
           <button
             type="button"
             className="btn btn-block py-2 btn-google"
-            onClick={() => onSSO("google")}
+            onClick={() => onSSO("Google")}
           >
             <span className="icon-google mr-3"></span> Login with Google
           </button>
