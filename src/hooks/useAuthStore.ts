@@ -18,12 +18,8 @@ type Actions = {
 type AuthStore = State & Actions;
 
 export const useAuthStore = create<AuthStore>((set) => {
-  const token = localStorage.getItem("token") || "";
-  const authenticated = token.length > 0;
-
   return {
-    authenticated,
-    token,
+    authenticated: false,
     error: "",
     login: async (username, password) => {
       try {
