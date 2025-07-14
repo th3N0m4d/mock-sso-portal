@@ -1,6 +1,6 @@
 # 🔐 SSO Login Demo
 
-> **Enterprise-Ready Auth** built with **Vite**, **React**, **TypeScript**, and **Keycloak**.  
+> **Enterprise-Ready Auth** built with **Vite**, **React**, **TypeScript**, and **AWS Amplify**.  
 > Demonstrates scalable architecture, clean code practices, and secure authentication flows using SSO and role-based access control.
 
 [![Build](https://img.shields.io/github/actions/workflow/status/th3N0m4d/mock-sso-portal/deploy.yml?branch=main)](https://github.com/th3N0m4d/mock-sso-portal/actions)
@@ -13,7 +13,7 @@
 ## 📦 Tech Stack
 
 - **Frontend:** Vite + React + TypeScript
-- **Auth:** Keycloak (OIDC), SSO-ready (Google, Facebook planned)
+- **Auth:** AWS Cognito + AWS Amplify, SSO-ready (Google, Facebook planned)
 - **CI/CD:** GitHub Actions + gh-pages
 - **Testing:** Vitest
 - **Linting:** ESLint
@@ -23,7 +23,7 @@
 
 ## 🚀 Features
 
-- 🔐 **SSO-ready architecture** (Keycloak, OIDC)
+- 🔐 **SSO-ready architecture** AWS Cognito with AWS Amplify
 - 🧠 **Role-based access control**
 - 🧪 **Tested codebase** with `vitest`
 - 🧹 **Linted** with ESLint
@@ -38,7 +38,6 @@
 |-------------|------------------------------|
 | `dev`       | Start local dev server       |
 | `build`     | Type check + build project   |
-| `deploy`    | Deploy to GitHub Pages       |
 | `test`      | Run unit tests (Vitest)      |
 | `lint`      | Lint codebase (ESLint)       |
 | `preview`   | Preview production build     |
@@ -49,7 +48,6 @@
 
 - Architecture diagram
 - Auth flow
-- Protected route demo
 
 ---
 
