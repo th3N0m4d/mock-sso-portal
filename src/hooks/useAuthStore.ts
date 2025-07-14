@@ -1,19 +1,18 @@
+import { getCurrentUser, signIn, signOut } from "@aws-amplify/auth";
 import { create } from "zustand";
-
-const INVALID_CREDS = "Invalid username or password";
-const MOCK_TOKEN = "mock-jwt-token";
 
 type State = {
   authenticated: boolean;
-  token: string;
   error: string;
   user?: unknown;
+  loading?: boolean;
 };
 
 type Actions = {
   login(username: string, password: string): void;
-  logout(): void;
+  logout(): Promise<void>;
   setUser(user: unknown): void;
+  checkUser(): Promise<void>;
 };
 
 type AuthStore = State & Actions;
@@ -26,21 +25,42 @@ export const useAuthStore = create<AuthStore>((set) => {
     authenticated,
     token,
     error: "",
-    login: (username, password) => {
-      if (username === "admin" && password === "pwd") {
-        set({ authenticated: true, token: MOCK_TOKEN, error: "" });
-        localStorage.setItem("token", MOCK_TOKEN);
-      } else {
-        set({ error: INVALID_CREDS });
-        console.error(INVALID_CREDS);
+    login: async (username, password) => {
+      try {
+        const { isSignedIn } = await signIn({ username, password });
+        if (isSignedIn) {
+          const user = await getCurrentUser();
+          set({ user, authenticated: true, error: "", loading: false });
+        } else {
+          set({
+            loading: false,
+            error: "Sign in is not complete. Additional steps may be required.",
+          });
+        }
+      } catch (error) {
+        set({ error: (error as Error).message });
       }
     },
-    logout: () => {
-      localStorage.removeItem("token");
-      set({ authenticated: false, token: "", error: "" });
+    logout: async () => {
+      try {
+        await signOut();
+        set({ user: undefined, authenticated: false, loading: false });
+      } catch (error) {
+        console.error("Error signing out:", error);
+        set({ error: (error as Error).message });
+      }
     },
     setUser: (user: unknown) => {
-      set({ user, authenticated: true, token: "", error: "" });
+      set({ user, authenticated: true, error: "" });
+    },
+    checkUser: async () => {
+      try {
+        const user = await getCurrentUser();
+        set({ user, authenticated: true, loading: false });
+      } catch (error) {
+        console.error("Error during getCurrentUser", error);
+        set({ user: undefined, authenticated: false, loading: false });
+      }
     },
   };
 });
