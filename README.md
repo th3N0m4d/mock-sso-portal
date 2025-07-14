@@ -14,10 +14,10 @@
 
 - **Frontend:** Vite + React + TypeScript
 - **Auth:** AWS Cognito + AWS Amplify, SSO-ready (Google, Facebook planned)
-- **CI/CD:** GitHub Actions + gh-pages
+- **CI/CD:** Vercel
 - **Testing:** Vitest
 - **Linting:** ESLint
-- **Deployments:** Vercel + GitHub Pages + Fly.io (serverless backends)
+- **Deployments:** Vercel
 
 ---
 
