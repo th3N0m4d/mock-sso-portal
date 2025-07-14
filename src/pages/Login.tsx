@@ -5,9 +5,10 @@ import { useAuthStore } from "../hooks";
 import { Hub } from "aws-amplify/utils";
 import { signInWithRedirect, getCurrentUser } from "aws-amplify/auth";
 import { useNavigate } from "react-router-dom";
+import { RegisterForm } from "../components/RegisterForm";
 
 export default function LoginPage() {
-  const [mode, setMode] = useState<"login" | "forgot">("login");
+  const [mode, setMode] = useState<"login" | "forgot" | "register">("login");
   const { login, setUser } = useAuthStore();
   const navigate = useNavigate();
 
@@ -18,15 +19,13 @@ export default function LoginPage() {
           // User has been redirected to the provider
           break;
         case "signInWithRedirect_failure":
-          // Handle sign in failure
           console.error("SSO sign in failed:", payload.data);
           break;
         case "signedIn":
-          // User is signed in. Update the auth store and redirect.
           getCurrentUser()
             .then((user) => {
-              setUser(user); // Update your auth state
-              navigate("/dashboard"); // Redirect to a protected route
+              setUser(user);
+              navigate("/dashboard");
             })
             .catch(() => console.log("Not signed in"));
           break;
@@ -36,10 +35,10 @@ export default function LoginPage() {
     return unsubscribe;
   }, [navigate, setUser]);
 
-  const handleSubmit = (data: { username: string; password: string }) => {
+  const handleSubmit = async (data: { username: string; password: string }) => {
     // handle auth
     const { username, password } = data;
-    login(username, password);
+    await login(username, password);
   };
 
   const handleSSOClick = async (provider: "Google" | "Facebook" | "Amazon") => {
@@ -49,6 +48,8 @@ export default function LoginPage() {
       console.error("Error during signInWithRedirect", error);
     }
   };
+
+  const handleRegister = () => {};
 
   return (
     <div className="d-md-flex half">
@@ -62,13 +63,20 @@ export default function LoginPage() {
           <div className="row align-items-center justify-content-center">
             <div className="col-md-12">
               <div className="form-block mx-auto">
-                {mode === "login" ? (
+                {mode === "login" && (
                   <LoginForm
                     onSubmit={handleSubmit}
                     onForgot={() => setMode("forgot")}
                     onSSO={handleSSOClick}
                   />
-                ) : (
+                )}
+                {mode === "register" && (
+                  <RegisterForm
+                    onSubmit={handleRegister}
+                    onBackToLogin={() => setMode("login")}
+                  />
+                )}
+                {mode === "forgot" && (
                   <ForgotPassword onBack={() => setMode("login")} />
                 )}
               </div>
