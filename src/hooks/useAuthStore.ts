@@ -1,11 +1,13 @@
-import { getCurrentUser, signIn, signOut } from "@aws-amplify/auth";
+import { getCurrentUser, signIn, signOut, signUp } from "@aws-amplify/auth";
 import { create } from "zustand";
+import type { SignUpInput } from "aws-amplify/auth";
 
 type State = {
   authenticated: boolean;
   error: string;
   user?: unknown;
   loading?: boolean;
+  requiresConfirmation: boolean;
 };
 
 type Actions = {
@@ -13,6 +15,7 @@ type Actions = {
   logout(): Promise<void>;
   setUser(user: unknown): void;
   checkUser(): Promise<void>;
+  signUp(params: SignUpInput): void;
 };
 
 type AuthStore = State & Actions;
@@ -20,6 +23,7 @@ type AuthStore = State & Actions;
 export const useAuthStore = create<AuthStore>((set) => {
   return {
     authenticated: false,
+    requiresConfirmation: false,
     error: "",
     login: async (username, password) => {
       try {
@@ -56,6 +60,20 @@ export const useAuthStore = create<AuthStore>((set) => {
       } catch (error) {
         console.error("Error during getCurrentUser", error);
         set({ user: undefined, authenticated: false, loading: false });
+      }
+    },
+    signUp: async (params) => {
+      set({ loading: true, error: "" });
+      try {
+        const { nextStep } = await signUp(params);
+
+        if (nextStep.signUpStep === "CONFIRM_SIGN_UP") {
+          set({ loading: false, requiresConfirmation: true });
+        } else {
+          set({ loading: false, requiresConfirmation: false });
+        }
+      } catch (error) {
+        set({ error: (error as Error).message, loading: false });
       }
     },
   };

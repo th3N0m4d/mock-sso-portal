@@ -1,15 +1,14 @@
 import { useState } from "react";
+import type { FormFields, FormType } from "../types";
 
 type LoginFormProps = {
-  onSubmit: (data: { username: string; password: string }) => void;
-  onForgot: () => void;
-  onSSO: (provider: "Google" | "Facebook") => void;
+  onSubmit: (data: FormFields) => void;
+  onSetMode: (mode: FormType) => void;
 };
 
-export function LoginForm({ onSubmit, onForgot, onSSO }: LoginFormProps) {
+export function LoginForm({ onSubmit, onSetMode }: LoginFormProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(true);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,80 +16,34 @@ export function LoginForm({ onSubmit, onForgot, onSSO }: LoginFormProps) {
   };
 
   return (
-    <>
-      <div className="text-center mb-5">
-        <h3 className="text-uppercase">Login</h3>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group first">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="your-email@gmail.com"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div className="form-group last mb-3">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            className="form-control"
-            placeholder="Your Password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
-        <div className="d-sm-flex mb-5 align-items-center">
-          <label className="control control--checkbox mb-3 mb-sm-0">
-            <span className="caption">Remember me</span>
-            <input
-              type="checkbox"
-              checked={rememberMe}
-              onChange={() => setRememberMe(!rememberMe)}
-            />
-            <div className="control__indicator"></div>
-          </label>
-          <span className="ml-auto">
-            <button
-              type="button"
-              className="forgot-pass btn btn-link p-0"
-              onClick={onForgot}
-            >
-              Forgot Password
-            </button>
-          </span>
-        </div>
-
+    <div className="login form">
+      <header>Login</header>
+      <form action="#" onSubmit={handleSubmit}>
         <input
-          type="submit"
-          value="Log In"
-          className="btn btn-block py-2 btn-primary"
+          type="text"
+          placeholder="Enter your username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
-
-        <span className="text-center my-3 d-block">or</span>
-
-        <div className="">
-          <button
-            type="button"
-            className="btn btn-block py-2 btn-facebook"
-            onClick={() => onSSO("Facebook")}
-          >
-            <span className="icon-facebook mr-3"></span> Login with Facebook
-          </button>
-          <button
-            type="button"
-            className="btn btn-block py-2 btn-google"
-            onClick={() => onSSO("Google")}
-          >
-            <span className="icon-google mr-3"></span> Login with Google
-          </button>
-        </div>
+        <input
+          type="password"
+          placeholder="Enter your password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <a href="#" onClick={() => onSetMode("forgot")}>
+          Forgot password?
+        </a>
+        <input type="button" className="button" value="Login" />
       </form>
-    </>
+      <div className="signup">
+        <span className="signup">
+          Don't have an account?
+          <label htmlFor="check" onClick={() => onSetMode("register")}>
+            Signup
+          </label>
+        </span>
+      </div>
+    </div>
   );
 }

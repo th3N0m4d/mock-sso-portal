@@ -1,16 +1,19 @@
-import { LoginForm, ForgotPassword } from "../components";
+import { LoginForm, ForgotPassword, ConfirmSignUpForm } from "../components";
 
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../hooks";
 import { Hub } from "aws-amplify/utils";
-import { signInWithRedirect, getCurrentUser } from "aws-amplify/auth";
+import { confirmSignUp, getCurrentUser } from "aws-amplify/auth";
 import { useNavigate } from "react-router-dom";
 import { RegisterForm } from "../components/RegisterForm";
+import "./Login.css";
+import type { ConfirmSignUpProps, FormFields, FormType } from "../types";
 
 export default function LoginPage() {
-  const [mode, setMode] = useState<"login" | "forgot" | "register">("login");
-  const { login, setUser } = useAuthStore();
+  const [mode, setMode] = useState<FormType>("login");
+  const { login, setUser, signUp } = useAuthStore();
   const navigate = useNavigate();
+  const [username, setUsername] = useState(""); // To hold username between steps
 
   useEffect(() => {
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
@@ -35,55 +38,55 @@ export default function LoginPage() {
     return unsubscribe;
   }, [navigate, setUser]);
 
-  const handleSubmit = async (data: { username: string; password: string }) => {
+  const handleSubmit = (data: { username: string; password: string }) => {
     // handle auth
     const { username, password } = data;
-    await login(username, password);
+    login(username, password);
   };
 
-  const handleSSOClick = async (provider: "Google" | "Facebook" | "Amazon") => {
-    try {
-      await signInWithRedirect({ provider });
-    } catch (error) {
-      console.error("Error during signInWithRedirect", error);
-    }
+  // const handleSSOClick = async (provider: "Google" | "Facebook" | "Amazon") => {
+  //   try {
+  //     await signInWithRedirect({ provider });
+  //   } catch (error) {
+  //     console.error("Error during signInWithRedirect", error);
+  //   }
+  // };
+
+  useEffect(() => {
+    console.log("mode", mode);
+  }, [mode]);
+
+  const handleRegister = ({ username, password }: FormFields) => {
+    setUsername(username);
+    signUp({
+      username: username,
+      password: password,
+      options: { userAttributes: { email: username } },
+    });
   };
 
-  const handleRegister = () => {};
+  const handleConfirmSignUp = ({ confirmationCode }: ConfirmSignUpProps) => {
+    confirmSignUp({ username, confirmationCode });
+    setMode("login");
+  };
+
+  const handleForgotPassword = () => {};
 
   return (
-    <div className="d-md-flex half">
-      <div
-        className="bg"
-        style={{ backgroundImage: 'url("/images/bg_1.jpg")' }}
-      ></div>
-
-      <div className="contents">
-        <div className="container">
-          <div className="row align-items-center justify-content-center">
-            <div className="col-md-12">
-              <div className="form-block mx-auto">
-                {mode === "login" && (
-                  <LoginForm
-                    onSubmit={handleSubmit}
-                    onForgot={() => setMode("forgot")}
-                    onSSO={handleSSOClick}
-                  />
-                )}
-                {mode === "register" && (
-                  <RegisterForm
-                    onSubmit={handleRegister}
-                    onBackToLogin={() => setMode("login")}
-                  />
-                )}
-                {mode === "forgot" && (
-                  <ForgotPassword onBack={() => setMode("login")} />
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="container">
+      {mode === "login" && (
+        <LoginForm onSubmit={handleSubmit} onSetMode={setMode} />
+      )}
+      {mode === "register" && (
+        <RegisterForm onSubmit={handleRegister} onSetMode={setMode} />
+      )}
+      {mode === "confirm" && (
+        <ConfirmSignUpForm onSubmit={handleConfirmSignUp} />
+      )}
+      {mode === "forgot" && (
+        <ForgotPassword onSubmit={handleForgotPassword} onSetMode={setMode} />
+      )}
+      {/**@todo add SSO login options here  */}
     </div>
   );
 }

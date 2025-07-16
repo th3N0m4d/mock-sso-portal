@@ -1,58 +1,57 @@
 import { useState } from "react";
+import type { FormFields, FormType } from "../types";
 
 type Props = {
-  onSubmit: (data: unknown) => void;
-  onBackToLogin: () => void;
+  onSubmit: (data: FormFields) => void;
+  onSetMode: (mode: FormType) => void;
 };
 
-export function RegisterForm({ onSubmit, onBackToLogin }: Props) {
+export function RegisterForm({ onSubmit, onSetMode }: Props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ username, password });
+    if (password === confirmPassword) {
+      onSubmit({ username, password });
+    } else {
+      alert("Please, make sure the passwords match.");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Register a new account</h3>
-      <div className="form-group first">
-        <label htmlFor="username">Email</label>
+    <div className="registration form">
+      <header>Signup</header>
+      <form action="#" onSubmit={handleSubmit}>
         <input
-          type="email"
-          className="form-control"
-          id="username"
+          type="text"
+          placeholder="Enter your username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          required
         />
-      </div>
-      <div className="form-group last mb-3">
-        <label htmlFor="password">Password</label>
         <input
           type="password"
-          className="form-control"
-          id="password"
+          placeholder="Create a password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
         />
+        <input
+          type="password"
+          placeholder="Confirm your password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <input type="submit" className="button" value="Signup" />
+      </form>
+      <div className="signup">
+        <span className="signup">
+          Already have an account?
+          <label htmlFor="check" onClick={() => onSetMode("login")}>
+            Login
+          </label>
+        </span>
       </div>
-
-      <input
-        type="submit"
-        value="Register"
-        className="btn btn-block btn-primary"
-      />
-
-      <span
-        onClick={onBackToLogin}
-        className="d-block text-center my-4 text-muted"
-        style={{ cursor: "pointer" }}
-      >
-        &mdash; or go back to login &mdash;
-      </span>
-    </form>
+    </div>
   );
 }
