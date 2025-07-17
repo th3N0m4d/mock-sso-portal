@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { FormFields, FormType } from "../types";
+import { toast } from "react-toastify";
 
 type Props = {
   onSubmit: (data: FormFields) => void;
@@ -16,7 +17,7 @@ export function RegisterForm({ onSubmit, onSetMode }: Props) {
     if (password === confirmPassword) {
       onSubmit({ username, password });
     } else {
-      alert("Please, make sure the passwords match.");
+      toast.error("Please, make sure the passwords match.");
     }
   };
 
