@@ -63,6 +63,7 @@ export default function LoginPage() {
       password: password,
       options: { userAttributes: { email: username } },
     });
+    setMode("confirm");
   };
 
   const handleConfirmSignUp = ({ confirmationCode }: ConfirmSignUpProps) => {

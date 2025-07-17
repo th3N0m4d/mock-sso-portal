@@ -21,9 +21,10 @@ export function ForgotPassword({ onSubmit, onSetMode }: ForgotPasswordProps) {
           type="text"
           placeholder="Enter your email"
           value={email}
+          autoComplete="username"
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input type="button" className="button" value="Send reset link" />
+        <input type="submit" className="button" value="Send reset link" />
       </form>
       <div className="signup">
         <span className="signup">

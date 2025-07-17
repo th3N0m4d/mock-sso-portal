@@ -20,6 +20,7 @@ export const ConfirmSignUpForm: React.FC<Props> = ({ onSubmit }) => {
         <input
           type="text"
           placeholder="Verification Code"
+          autoComplete="one-time-code"
           value={confirmationCode}
           onChange={(e) => setConfirmationCode(e.target.value)}
           required

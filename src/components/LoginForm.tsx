@@ -22,19 +22,21 @@ export function LoginForm({ onSubmit, onSetMode }: LoginFormProps) {
         <input
           type="text"
           placeholder="Enter your username"
+          autoComplete="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
           placeholder="Enter your password"
+          autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <a href="#" onClick={() => onSetMode("forgot")}>
           Forgot password?
         </a>
-        <input type="button" className="button" value="Login" />
+        <input type="submit" className="button" value="Login" />
       </form>
       <div className="signup">
         <span className="signup">
